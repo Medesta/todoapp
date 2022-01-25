@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import TaskInput from './app/component/TaskInput';
+import TaskInput from './src/component/TaskInput';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import TaskList from './app/component/TaskList';
-import TaskModal from './app/component/TaskModal';
+import TaskList from './src/component/TaskList';
+import TaskModal from './src/component/TaskModal';
 
 const STORAGE_KEY = 'taskList';
 
 const App = () => {
   const [title, setTitle] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
   const [viewTask, setViewTask] = useState({});
   const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
