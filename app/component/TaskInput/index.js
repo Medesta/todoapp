@@ -1,53 +1,41 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, ScrollView} from 'react-native';
 import TextInput from '../../theme/Input';
 import TextBlock from '../../theme/TextBlock';
 
-const TaskInput = () => {
-  const [data, setData] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const storeData = async () => {
-    try {
-      const jsonValue = JSON.stringify({title, description});
-      await AsyncStorage.setItem('tasks', jsonValue);
-      alert('success');
-    } catch (e) {
-      alert('error');
-    }
-  };
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('tasks');
-      if (value !== null) {
-        setData(value);
-      }
-    } catch (e) {
-      // error reading value
-    }
-  };
-  console.log(data, 'value');
-
+const TaskInput = ({
+  title,
+  setTitle,
+  description,
+  setDescription,
+  saveData,
+  show,
+}) => {
+  if (!show) {
+    return false;
+  }
   return (
-    <ScrollView style={style.holder}>
-      <TextInput
-        placeholder="Enter Task Title"
-        value={title}
-        onChangeText={text => setTitle(text)}
-      />
-      <TextBlock
-        placeholder="Enter Task Discription"
-        value={description}
-        onChangeText={text => setDescription(text)}
-      />
-      <TouchableOpacity
-        style={style.button}
-        disabled={!(title && description)}
-        onPress={() => storeData()}>
-        <Text style={style.buttonText}>Save</Text>
-      </TouchableOpacity>
-    </ScrollView>
+    <>
+      <Text style={style.taskHeading}>Add A New Task</Text>
+      <ScrollView style={style.holder}>
+        <TextInput
+          placeholder="Enter Task Title"
+          value={title}
+          onChangeText={text => setTitle(text)}
+        />
+        <TextBlock
+          placeholder="Enter Task Discription"
+          value={description}
+          onChangeText={text => setDescription(text)}
+        />
+        <TouchableOpacity
+          style={style.button}
+          disabled={!(title && description)}
+          onPress={() => saveData()}>
+          <Text style={style.buttonText}>Save</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </>
   );
 };
 const style = StyleSheet.create({
@@ -56,6 +44,11 @@ const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#272c4c',
+  },
+  taskHeading: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#272c4c',
   },
   buttonText: {
     color: '#fff',
